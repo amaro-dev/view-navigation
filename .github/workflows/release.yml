@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Release
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -28,14 +28,14 @@ jobs:
 
       - name: Get current library version
         shell: bash
-        run: echo "::set-env name=VERSION_NAME::./gradlew navigation:pomVersion"
+        run: echo "::set-env name=VERSION_NAME::$(./version.sh)"
 
       - name: Print version
         shell: bash
-        run: echo "Version is ${VERSION_NAME}"
+        run: echo "Version is '${VERSION_NAME}'"
 
-      - name: Release notes generator
-        uses: Decathlon/release-notes-generator-action@v2.1.0
+#      - name: Release notes generator
+#        uses: Decathlon/release-notes-generator-action@v2.1.0
 #
 #      - name: Create a Release
 #        uses: actions/create-release@v1
