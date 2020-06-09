@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ViewNavigator">
+        <attr name="layoutId" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="NavigationHostView">
+        <attr name="mapId" format="reference" />
+    </declare-styleable>
+</resources>
