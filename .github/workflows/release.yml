@@ -27,12 +27,12 @@ jobs:
           java-version: 1.9
 
       - name: Get current library version
-          shell: bash
-          run: echo "::set-env name=VERSION_NAME::./gradlew navigation:pomVersion"
+        shell: bash
+        run: echo "::set-env name=VERSION_NAME::./gradlew navigation:pomVersion"
 
       - name: Print version
-          shell: bash
-          run: echo "Version is ${VERSION_NAME}"
+        shell: bash
+        run: echo "Version is ${VERSION_NAME}"
 
       - name: Release notes generator
         uses: Decathlon/release-notes-generator-action@v2.1.0
