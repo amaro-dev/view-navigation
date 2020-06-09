@@ -50,3 +50,7 @@ publishing {
         }
     }
 }
+
+task pomVersion() {
+    println(project.findProperty("pom.version"))
+}
