@@ -31,10 +31,10 @@ task jacocoUnitTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) 
         html.enabled = true
     }
     classDirectories.setFrom(fileTree(
-            dir: "../${jacocoSetup.targetModule}/build/tmp/kotlin-classes/debug/${jacocoSetup.packagePath}",
+            dir: "${projectDir}/../${jacocoSetup.targetModule}/build/tmp/kotlin-classes/debug",
             excludes: androidExclusion
     ))
-    sourceDirectories.setFrom(files("../${jacocoSetup.targetModule}/src/main/java/${jacocoSetup.packagePath}"))
+    sourceDirectories.setFrom(files("../${jacocoSetup.targetModule}/src/main/java"))
     executionData.setFrom(files('build/jacoco/testDebugUnitTest.exec'))
 
 }
