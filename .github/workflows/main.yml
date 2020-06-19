@@ -37,4 +37,4 @@ jobs:
         uses: ScaCap/action-ktlint@1.1
         with:
           # GITHUB_TOKEN
-          github_token: ${{secrets.CODE_REVIEW_TOKEN}
+          github_token: ${{secrets.CODE_REVIEW_TOKEN}}
