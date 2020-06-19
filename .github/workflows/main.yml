@@ -37,4 +37,4 @@ jobs:
         uses: yutailang0119/action-ktlint@v1.0.0
         with:
           # The file path of the XML lint report
-          xml_path: './format.report.xml'
+          xml_path: build/ktlint-report-in-checkstyle-format.xml
