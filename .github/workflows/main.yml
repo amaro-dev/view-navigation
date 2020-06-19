@@ -33,8 +33,8 @@ jobs:
         with:
           arguments: "app:jacocoUnitTestReport"
 
-      - name: GitHub Action for ktlint
-        uses: yutailang0119/action-ktlint@v1.0.0
+      - name: Run ktlint with reviewdog
+        uses: ScaCap/action-ktlint@1.1
         with:
-          # The file path of the XML lint report
-          xml_path: build/ktlint-report-in-checkstyle-format.xml
+          # GITHUB_TOKEN
+          github_token: ${{secrets.CODE_REVIEW_TOKEN}
