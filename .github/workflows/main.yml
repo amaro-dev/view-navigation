@@ -32,3 +32,9 @@ jobs:
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: "app:jacocoUnitTestReport"
+
+      - name: GitHub Action for ktlint
+        uses: yutailang0119/action-ktlint@v1.0.0
+        with:
+          # The file path of the XML lint report
+          xml_path: './format.report.xml'
