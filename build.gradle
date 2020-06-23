@@ -2,8 +2,11 @@
 
 buildscript {
     def props = new Properties()
-    new File('local.properties').withInputStream {
-        props.load(it)
+    def propsFile = new File('local.properties')
+    if (propsFile.exists()) {
+        new File('local.properties').withInputStream {
+            props.load(it)
+        }
     }
     ext.kotlin_version = "1.3.72"
     ext.jacocoSetup = new Properties()
