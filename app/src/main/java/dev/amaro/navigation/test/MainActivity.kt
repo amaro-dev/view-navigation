@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
             Router.Empty else router
         navController = Navigation.findNavController(main_navigation_host)
         Navigation.setViewNavController(main_navigation_host, navController)
-
     }
 
     override fun onSupportNavigateUp(): Boolean = navController.navigateUp()
