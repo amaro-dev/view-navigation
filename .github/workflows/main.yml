@@ -5,15 +5,25 @@ name: CI
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  push:
-    branches: [ develop ]
   pull_request:
     branches: [ develop ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run ktlint with reviewdog
+        uses: ScaCap/action-ktlint@1.1
+        with:
+          # GITHUB_TOKEN
+          github_token: ${{secrets.CODE_REVIEW_TOKEN}}
+
   # This workflow contains a single job called "build"
-  build:
+  coverage:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -30,11 +40,19 @@ jobs:
 
       - name: Gradle Command
         uses: eskatos/gradle-command-action@v1
+        env:
+          SONARPROJECTKEY: ${{ secrets.SONARPROJECTKEY }}
+          SONARORGANIZATIONID: ${{ secrets.SONARORGANIZATIONID }}
+          SONARTOKEN: ${{ secrets.SONARTOKEN }}
         with:
-          arguments: "app:jacocoUnitTestReport"
+          arguments: "app:jacocoUnitTestReport sonarqube"
 
-      - name: Run ktlint with reviewdog
-        uses: ScaCap/action-ktlint@1.1
+      - name: Cache multiple paths
+        uses: actions/cache@v2
         with:
-          # GITHUB_TOKEN
-          github_token: ${{secrets.CODE_REVIEW_TOKEN}}
+          path: |
+            ~/cache
+            !~/cache/exclude
+            **/node_modules
+            **/.gradle
+          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
