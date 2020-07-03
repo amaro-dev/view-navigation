@@ -26,20 +26,24 @@ jobs:
           # The Java version to make available on the path. Takes a whole or semver Java version, or 1.x syntax (e.g. 1.8 => Java 8.x)
           java-version: 1.9
 
-      - name: Get branch name
-        shell: bash
-        run: echo "::set-env name=BRANCH_NAME::$(git rev-parse --abbrev-ref HEAD)"
-
       - name: Get fix number
         shell: bash
-        run: echo "::set-env name=FIX_NUMBER::$(git rev-list --count develop..$branch)"
+        run: |
+          command="git rev-list --count develop.."$BRANCH_NAME
+          commits=$($command)
+          echo $commits
+
+        env:
+          BRANCH_NAME: ${{github.base_ref}}
 
       - name: Get current library version
         shell: bash
         run: |
-          IFS='-' read -ra strarr <<< "$branch"
-          version="${strarr[1]}".$fix
+          IFS='/' read -ra strarr <<< "$BRANCH_NAME"
+          version="${strarr[1]}".$FIX_NUMBER
           echo "::set-env name=VERSION_NAME::$version"
+        env:
+          BRANCH_NAME: ${{github.base_ref}}
 
       - name: Print version
         shell: bash
