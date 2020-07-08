@@ -5,7 +5,7 @@ name: Release
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  pull_request:
+  push:
     branches: [ releases/** ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -18,7 +18,11 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.1
+        with:
+          ref: develop
+
+      - uses: actions/checkout@v2.3.1
 
       - name: Setup Java JDK
         uses: actions/setup-java@v1.3.0
@@ -29,21 +33,15 @@ jobs:
       - name: Get fix number
         shell: bash
         run: |
-          command="git rev-list --count develop.."$BRANCH_NAME
-          commits=$($command)
-          echo $commits
-
-        env:
-          BRANCH_NAME: ${{github.base_ref}}
+          commits=$(git rev-list --count refs/remotes/origin/develop..HEAD)
+          echo "::set-env name=FIX_NUMBER::$commits"
 
       - name: Get current library version
         shell: bash
         run: |
-          IFS='/' read -ra strarr <<< "$BRANCH_NAME"
+          IFS='/' read -ra strarr <<< "${GITHUB_REF#refs/heads/}"
           version="${strarr[1]}".$FIX_NUMBER
           echo "::set-env name=VERSION_NAME::$version"
-        env:
-          BRANCH_NAME: ${{github.base_ref}}
 
       - name: Print version
         shell: bash
