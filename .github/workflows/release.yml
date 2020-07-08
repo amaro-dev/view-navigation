@@ -38,10 +38,12 @@ jobs:
 
       - name: Get current library version
         shell: bash
+        id: library_version
         run: |
           IFS='/' read -ra strarr <<< "${GITHUB_REF#refs/heads/}"
           version="${strarr[1]}".$FIX_NUMBER
           echo "::set-env name=VERSION_NAME::$version"
+          echo "::set-output name=version_name::$version"
 
       - name: Set library version to deploy
         shell: bash
@@ -52,13 +54,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ VERSION_NAME }}
-          release_name: ${{ VERSION_NAME }}
+          tag_name: ${{ steps.library_version.outputs.version_name }}
+          release_name: ${{ steps.library_version.outputs.version_name }}
 
       - name: Gradle Command
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: "navigation:publish"
-        env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          USERNAME: RodrigoAmaroEng
+env:
+  TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  USERNAME: RodrigoAmaroEng
