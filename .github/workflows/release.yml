@@ -43,27 +43,17 @@ jobs:
           version="${strarr[1]}".$FIX_NUMBER
           echo "::set-env name=VERSION_NAME::$version"
 
-      - name: Print version
+      - name: Set library version to deploy
         shell: bash
-        run: echo "Version is '${VERSION_NAME}'"
+        run: sed -i -e 's/pom.version=[0-9]*.[0-9]*.[0-9]*/pom.version='${VERSION_NAME}'/g' ./navigation/gradle.properties
 
-#      - name: Release notes generator
-#        uses: Decathlon/release-notes-generator-action@v2.1.0
-#
-#      - name: Create a Release
-#        uses: actions/create-release@v1
-#        with:
-#          tag_name:
-#          # The name of the release. For example, `Release v1.0.1`
-#          release_name:
-#          # Text describing the contents of the tag.
-#          body: # optional
-#          # `true` to create a draft (unpublished) release, `false` to create a published one. Default: `false`
-#          draft: # optional
-#          # `true` to identify the release as a prerelease. `false` to identify the release as a full release. Default: `false`
-#          prerelease: # optional
-#
-#      - name: Gradle Command
-#        uses: eskatos/gradle-command-action@v1
-#        with:
-#          arguments: "navigation:publish"
+      - name: Create a Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: $VERSION_NAME
+          release_name: $VERSION_NAME
+
+      - name: Gradle Command
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: "navigation:publish"
