@@ -20,7 +20,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2.3.1
         with:
-          ref: develop
+          ref: main
 
       - uses: actions/checkout@v2.3.1
 
@@ -33,7 +33,7 @@ jobs:
       - name: Get fix number
         shell: bash
         run: |
-          commits=$(git rev-list --count refs/remotes/origin/develop..HEAD)
+          commits=$(git rev-list --count refs/remotes/origin/main..HEAD)
           echo "FIX_NUMBER=$commits" >> $GITHUB_ENV
 
       - name: Get current library version
