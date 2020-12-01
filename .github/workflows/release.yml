@@ -33,7 +33,7 @@ jobs:
       - name: Get fix number
         shell: bash
         run: |
-          commits=$(git rev-list --count refs/remotes/origin/develop..HEAD)
+          commits=$(git rev-list --count refs/remotes/origin/main..HEAD)
           echo "FIX_NUMBER=$commits" >> $GITHUB_ENV
 
       - name: Get current library version
