@@ -27,11 +27,11 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    api "androidx.navigation:navigation-ui-ktx:2.3.0"
-    api "androidx.navigation:navigation-runtime-ktx:2.3.0"
-    testImplementation 'junit:junit:4.13'
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    api "androidx.navigation:navigation-ui-ktx:2.3.1"
+    api "androidx.navigation:navigation-runtime-ktx:2.3.1"
+    testImplementation 'junit:junit:4.13.1'
 }
 
-apply from: 'publish.gradle'
+apply from: 'https://gist.githubusercontent.com/RodrigoAmaroEng/311aea4b8d263f1b7b4dc02f65de9151/raw/86390d4870a53d54d5e7bab14297e8b0e05d3997/publish.gradle'

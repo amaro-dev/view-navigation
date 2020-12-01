@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v2.3.1
 
       - name: Setup Java JDK
-        uses: actions/setup-java@v1.3.0
+        uses: actions/setup-java@v1.4.3
         with:
           # The Java version to make available on the path. Takes a whole or semver Java version, or 1.x syntax (e.g. 1.8 => Java 8.x)
           java-version: 1.9
@@ -34,14 +34,14 @@ jobs:
         shell: bash
         run: |
           commits=$(git rev-list --count refs/remotes/origin/develop..HEAD)
-          echo "::set-env name=FIX_NUMBER::$commits"
+          echo "FIX_NUMBER=$commits" >> $GITHUB_ENV
 
       - name: Get current library version
         shell: bash
         run: |
           IFS='/' read -ra strarr <<< "${GITHUB_REF#refs/heads/}"
           version="${strarr[1]}".$FIX_NUMBER
-          echo "::set-env name=VERSION_NAME::$version"
+          echo "VERSION_NAME=$version" >> $GITHUB_ENV
 
       - name: Set library version to deploy
         shell: bash
