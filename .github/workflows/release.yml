@@ -37,11 +37,13 @@ jobs:
           echo "FIX_NUMBER=$commits" >> $GITHUB_ENV
 
       - name: Get current library version
+        id: manager
         shell: bash
         run: |
           IFS='/' read -ra strarr <<< "${GITHUB_REF#refs/heads/}"
           version="${strarr[1]}".$FIX_NUMBER
           echo "VERSION_NAME=$version" >> $GITHUB_ENV
+          echo "::set-output name=version_name::$version"
 
       - name: Set library version to deploy
         shell: bash
@@ -52,12 +54,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: $VERSION_NAME
-          release_name: $VERSION_NAME
+          tag_name: ${{ steps.manager.outputs.version_name }}
+          release_name: ${{ steps.manager.outputs.version_name }}
 
       - name: Generate GPG Key file
         shell: bash
-        run: echo "${SIGNING_SECRET_KEY_RING_CONTENT}" >> ./navigation/signature.gpg
+        env:
+          CONTENT: ${{ secrets.SIGNING_SECRET_KEY_RING_CONTENT }}
+        run: echo "${CONTENT}" >> ./navigation/signature.gpg
 
       - name: Gradle Command
         uses: eskatos/gradle-command-action@v1
