@@ -55,7 +55,17 @@ jobs:
           tag_name: $VERSION_NAME
           release_name: $VERSION_NAME
 
+      - name: Generate GPG Key file
+        shell: bash
+        run: echo "${SIGNING_SECRET_KEY_RING_CONTENT}" >> ./navigation/signature.gpg
+
       - name: Gradle Command
         uses: eskatos/gradle-command-action@v1
+        env:
+          SIGNING_SECRET_KEY_RING_FILE: "./navigation/signature.gpg"
         with:
           arguments: "navigation:publish"
+
+      - name: Remove GPG file
+        shell: bash
+        run: rm -f ./navigation/signature.gpg
