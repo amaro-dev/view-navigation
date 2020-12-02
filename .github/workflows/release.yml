@@ -37,35 +37,46 @@ jobs:
           echo "FIX_NUMBER=$commits" >> $GITHUB_ENV
 
       - name: Get current library version
+        id: manager
         shell: bash
         run: |
           IFS='/' read -ra strarr <<< "${GITHUB_REF#refs/heads/}"
           version="${strarr[1]}".$FIX_NUMBER
           echo "VERSION_NAME=$version" >> $GITHUB_ENV
+          echo "::set-output name=version_name::$version"
 
       - name: Set library version to deploy
         shell: bash
         run: sed -i -e 's/pom.version=[0-9]*.[0-9]*.[0-9]*/pom.version='${VERSION_NAME}'/g' ./navigation/gradle.properties
+
+      - name: Generate GPG Key file
+        shell: bash
+        env:
+          CONTENT: ${{ secrets.SIGNING_SECRET_KEY_RING_CONTENT }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+        run: |
+          printf "$CONTENT" | base64 --decode > ./navigation/private.key
+          gpg --batch --import ./navigation/private.key
+          echo "signing.keyId=$SIGNING_KEY_ID" >> ./navigation/local.properties
+          echo "signing.password=$SIGNING_PASSWORD" >> ./navigation/local.properties
+          echo "signing.secretKeyRingFile=./private.key" >> ./navigation/local.properties
+
+      - name: Gradle Command
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: "navigation:publish"
 
       - name: Create a Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: $VERSION_NAME
-          release_name: $VERSION_NAME
-
-      - name: Generate GPG Key file
-        shell: bash
-        run: echo "${SIGNING_SECRET_KEY_RING_CONTENT}" >> ./navigation/signature.gpg
-
-      - name: Gradle Command
-        uses: eskatos/gradle-command-action@v1
-        env:
-          SIGNING_SECRET_KEY_RING_FILE: "./navigation/signature.gpg"
-        with:
-          arguments: "navigation:publish"
+          tag_name: ${{ steps.manager.outputs.version_name }}
+          release_name: ${{ steps.manager.outputs.version_name }}
 
       - name: Remove GPG file
         shell: bash
-        run: rm -f ./navigation/signature.gpg
+        run: |
+          rm -f ./navigation/signature.gpg
+          rm -f ./navigation/local.properties

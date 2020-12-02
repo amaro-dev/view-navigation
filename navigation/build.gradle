@@ -34,4 +34,4 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
 }
 
-apply from: 'https://gist.githubusercontent.com/RodrigoAmaroEng/311aea4b8d263f1b7b4dc02f65de9151/raw/86390d4870a53d54d5e7bab14297e8b0e05d3997/publish.gradle'
+apply from: 'https://gist.githubusercontent.com/RodrigoAmaroEng/311aea4b8d263f1b7b4dc02f65de9151/raw/a77150e72ea0e9729293bcb8ad3ca20f56c449fc/publish.gradle'

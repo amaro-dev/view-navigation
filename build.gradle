@@ -8,7 +8,7 @@ buildscript {
             props.load(it)
         }
     }
-    ext.kotlin_version = "1.4.10"
+    ext.kotlin_version = "1.4.20"
     ext.jacocoSetup = new Properties()
     ext.jacocoSetup['version'] = "0.8.5"
     ext.jacocoSetup['targetModule'] = "navigation"
