@@ -68,7 +68,7 @@ jobs:
           PUBLISH_USERNAME: ${{secrets.MAVEN_CENTRAL_USER}}
           PUBLISH_PASSWORD: ${{secrets.MAVEN_CENTRAL_TOKEN}}
         with:
-          arguments: "navigation:publish"
+          arguments: "-Dorg.gradle.internal.http.socketTimeout=90000 -Dorg.gradle.internal.http.connectionTimeout=90000 navigation:publish"
 
       - name: Create a Release
         uses: actions/create-release@v1
