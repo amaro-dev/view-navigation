@@ -19,7 +19,6 @@ interface Router {
                 .getConstructor(Context::class.java)
                 .newInstance(context) as View?
         }
-
     }
 }
 
