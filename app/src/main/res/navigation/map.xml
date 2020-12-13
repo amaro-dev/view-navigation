@@ -8,6 +8,7 @@
 
     <screen_view
         android:id="@+id/first_screen_view"
+        app:name="dev.amaro.navigation.test.view.FirstView"
         app:layoutId="@layout/screen_view_first"
         tools:layout="@layout/screen_view_first">
 
@@ -29,6 +30,7 @@
 
     <screen_view
         android:id="@+id/second_screen_view"
+        app:name="dev.amaro.navigation.test.view.SecondView"
         app:layoutId="@layout/screen_view_second"
         tools:layout="@layout/screen_view_second">
 
@@ -43,11 +45,13 @@
 
     <screen_view
         android:id="@+id/last_screen_view"
+        app:name="dev.amaro.navigation.test.view.LastView"
         app:layoutId="@layout/screen_view_last"
         tools:layout="@layout/screen_view_last" />
 
     <screen_view
         android:id="@+id/screen_view_third"
+        app:name="dev.amaro.navigation.test.view.ThirdView"
         app:layoutId="@layout/screen_view_third"
         tools:layout="@layout/screen_view_third" />
 

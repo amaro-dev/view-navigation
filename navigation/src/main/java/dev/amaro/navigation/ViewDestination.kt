@@ -13,10 +13,13 @@ class ViewDestination(navigator: Navigator<out NavDestination>) : NavDestination
     @LayoutRes
     var layoutId: Int = 0
 
+    var className: String? = null
+
     override fun onInflate(context: Context, attrs: AttributeSet) {
         super.onInflate(context, attrs)
         context.resources.obtainAttributes(attrs, R.styleable.ViewNavigator).apply {
             layoutId = getResourceId(R.styleable.ViewNavigator_layoutId, 0)
+            className = getString(R.styleable.ViewNavigator_name)
             recycle()
         }
     }
