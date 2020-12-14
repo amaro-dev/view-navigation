@@ -18,9 +18,11 @@ import org.hamcrest.Matchers.instanceOf
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [29])
 class NavigatorTests {
 
     @Test

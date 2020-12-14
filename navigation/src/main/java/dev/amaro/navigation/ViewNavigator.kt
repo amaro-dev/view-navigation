@@ -13,7 +13,7 @@ class ViewNavigator(
     private val router: Router
 ) : Navigator<ViewDestination>() {
 
-    private val viewStack: Deque<Pair<Int, Int>> = LinkedList()
+    private val viewStack: Deque<ViewDestination> = LinkedList()
 
     override fun navigate(
         destination: ViewDestination,
@@ -23,7 +23,7 @@ class ViewNavigator(
     ) = destination.apply {
         val screen = router.routeTo(destination)
         screen?.run {
-            viewStack.push(Pair(destination.id, destination.layoutId))
+            viewStack.push(destination)
         }
         replaceView(screen)
     }
@@ -41,7 +41,7 @@ class ViewNavigator(
         viewStack.isNotEmpty() -> {
             viewStack.pop()
             viewStack.peekLast()?.let {
-                replaceView(router.routeTo(it.second))
+                replaceView(router.routeTo(it))
             }
             true
         }

@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="ViewNavigator">
         <attr name="layoutId" format="reference" />
+        <attr name="name" format="string" />
     </declare-styleable>
     <declare-styleable name="NavigationHostView">
         <attr name="mapId" format="reference" />

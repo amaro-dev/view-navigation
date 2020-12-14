@@ -1,17 +1,11 @@
 package dev.amaro.navigation.test.view
 
 import android.content.Context
-import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.FrameLayout
 import dev.amaro.navigation.test.R
 
-class ThirdView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = -1
-) : ConstraintLayout(context, attrs, defStyleAttr) {
-
+class ThirdView @JvmOverloads constructor(context: Context) : FrameLayout(context, null, -1) {
     init {
         LayoutInflater.from(context).inflate(R.layout.screen_view_third, this)
     }
