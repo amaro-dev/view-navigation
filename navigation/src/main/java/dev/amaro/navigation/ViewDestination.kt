@@ -19,7 +19,7 @@ class ViewDestination(navigator: Navigator<out NavDestination>) : NavDestination
         super.onInflate(context, attrs)
         context.resources.obtainAttributes(attrs, R.styleable.ViewNavigator).apply {
             layoutId = getResourceId(R.styleable.ViewNavigator_layoutId, 0)
-            className = getString(R.styleable.ViewNavigator_name)
+            className = getString(R.styleable.ViewNavigator_android_name)
             recycle()
         }
     }

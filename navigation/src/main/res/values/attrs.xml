@@ -2,7 +2,7 @@
 <resources>
     <declare-styleable name="ViewNavigator">
         <attr name="layoutId" format="reference" />
-        <attr name="name" format="string" />
+        <attr name="android:name" />
     </declare-styleable>
     <declare-styleable name="NavigationHostView">
         <attr name="mapId" format="reference" />

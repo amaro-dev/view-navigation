@@ -8,7 +8,7 @@ buildscript {
             props.load(it)
         }
     }
-    ext.kotlin_version = "1.4.20"
+    ext.kotlin_version = "1.4.21"
     ext.jacocoSetup = new Properties()
     ext.jacocoSetup['version'] = "0.8.5"
     ext.jacocoSetup['targetModule'] = "navigation"
@@ -26,6 +26,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.21.0"
         classpath "org.jacoco:org.jacoco.core:${jacocoSetup.version}"
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarSetup.version}"
 
@@ -46,3 +47,4 @@ task clean(type: Delete) {
 }
 
 apply from: 'sonar.gradle'
+apply plugin: 'io.codearte.nexus-staging'
