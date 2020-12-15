@@ -25,10 +25,11 @@ jobs:
           # The Java version to make available on the path. Takes a whole or semver Java version, or 1.x syntax (e.g. 1.8 => Java 8.x)
           java-version: 11
 
-      - name: Get fix number
+      - name: Get branch initial commit tag
         id: release
         shell: bash
         run: |
+          echo "The current branch is ${GITHUB_REF#refs/heads/}"
           releaseBranch=$(git rev-parse --abbrev-ref HEAD | sed 's/.*\/\(.*\)/\1/')
           echo "::set-output name=release_branch::$releaseBranch"
 
@@ -36,18 +37,17 @@ jobs:
         with:
           ref: ${{ steps.release.outputs.release_branch }}
 
-      - name: Get current library version
+      - name: Calculating fix number
         id: manager
         shell: bash
         env:
           VERSION: ${{ steps.release.outputs.release_branch }}
         run: |
+          git checkout ${GITHUB_REF#refs/heads/}
           commits=$(git rev-list --count refs/tags/$VERSION..HEAD)
-          echo "FIX_NUMBER=$commits" >> $GITHUB_ENV
-          IFS='/' read -ra strarr <<< "${GITHUB_REF#refs/heads/}"
-          version="${strarr[1]}".$FIX_NUMBER
-          echo "VERSION_NAME=$version" >> $GITHUB_ENV
-          echo "::set-output name=version_name::$version"
+          echo "You are $commits commits ahead in this branch"
+          echo "VERSION_NAME=$VERSION.$commits" >> $GITHUB_ENV
+          echo "::set-output name=version_name::$VERSION_NAME"
 
       - name: Set library version to deploy
         shell: bash
@@ -66,13 +66,22 @@ jobs:
           echo "signing.password=$SIGNING_PASSWORD" >> ./navigation/local.properties
           echo "signing.secretKeyRingFile=./private.key" >> ./navigation/local.properties
 
-      - name: Gradle Command
+      - name: Sending to Maven Central
         uses: eskatos/gradle-command-action@v1
         env:
           PUBLISH_USERNAME: ${{secrets.MAVEN_CENTRAL_USER}}
           PUBLISH_PASSWORD: ${{secrets.MAVEN_CENTRAL_TOKEN}}
         with:
           arguments: "-Dorg.gradle.internal.http.socketTimeout=300000 -Dorg.gradle.internal.http.connectionTimeout=300000 navigation:publish"
+
+      - name: Confirming release on Maven Central
+        uses: eskatos/gradle-command-action@v1
+        env:
+          PUBLISH_USERNAME: ${{secrets.MAVEN_CENTRAL_USER}}
+          PUBLISH_PASSWORD: ${{secrets.MAVEN_CENTRAL_TOKEN}}
+          PUBLISH_PROFILE: ${{secrets.MAVEN_CENTRAL_PROFILE}}
+        with:
+          arguments: "closeAndReleaseRepository"
 
       - name: Create a Release
         uses: actions/create-release@v1

@@ -34,11 +34,6 @@ dependencies {
     api "androidx.navigation:navigation-runtime-ktx:2.3.2"
 }
 
-apply from: 'https://gist.githubusercontent.com/RodrigoAmaroEng/311aea4b8d263f1b7b4dc02f65de9151/raw/a77150e72ea0e9729293bcb8ad3ca20f56c449fc/publish.gradle'
+apply from: 'https://gist.githubusercontent.com/RodrigoAmaroEng/311aea4b8d263f1b7b4dc02f65de9151/raw/e249700e953bd24867e10519e13bebbe9c0c78e8/publish.gradle'
 
-nexusStaging {
-    packageGroup = project.findProperty("pom.group")
-    stagingProfileId = '31e6926a8c2d8' // dummy example, replace with your own!
-    username = project.findProperty("publish.user") ?: System.getenv('PUBLISH_USERNAME') ?: ""
-    password = project.findProperty("publish.pass") ?: System.getenv('PUBLISH_PASSWORD') ?: ""
-}
+println("Profile ID: ${deploy.profileId}")
